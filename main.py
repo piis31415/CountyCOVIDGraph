@@ -20,7 +20,7 @@ df_diff = df.set_index('date').diff()  # get number of new cases per day
 
 df_diff['Date'] = df_diff.index.date  # return date to its own column rather than as the index
 cutoff = datetime.date(2020, 8, 30)  # set cutoff date
-df_diff['cases'][-1] = 306.0 # manually enter today's data if needed (comment out otherwise)
+df_diff['cases'][-1] = 276 # manually enter today's data if needed (comment out otherwise)
 df_diff['School Metric'] = df_diff.rolling(14).sum()  # take 14-day rolling sum
 df_diff['School Metric'] *= 10000 / 1265843  # find cases per 10k people
 df_diff = df_diff[df_diff['Date'] > cutoff]  # filter only dates after cutoff date
@@ -41,7 +41,6 @@ plt.axhline(y=50, color='r', linestyle='-', label='Both distance')
 plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.07), fancybox=True, shadow=True)  # add legend
 plt.ylabel('Number of cases per 10,000 people over 14 days')  # add y-axis label
 plt.xlabel('Date')  # add x-axis label
-plt.figtext('Data from NYTimes') # add text
 
 
 plt.tight_layout()  # make sure full legend is shown
