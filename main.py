@@ -20,7 +20,7 @@ df_diff = df.set_index('date').diff()  # get number of new cases per day
 
 df_diff['Date'] = df_diff.index.date  # return date to its own column rather than as the index
 cutoff = datetime.date(2020, 8, 30)  # set cutoff date
-df_diff['cases'][-1] = 276 # manually enter today's data if needed (comment out otherwise)
+df_diff['cases'][-1] = 308 # manually enter today's data if needed (comment out otherwise)
 df_diff['School Metric'] = df_diff.rolling(14).sum()  # take 14-day rolling sum
 df_diff['School Metric'] *= 10000 / 1265843  # find cases per 10k people
 df_diff = df_diff[df_diff['Date'] > cutoff]  # filter only dates after cutoff date
