@@ -7,9 +7,26 @@ liveurl = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/u
 
 df = pd.read_csv(url, parse_dates=['date'])  # parse CSVs from NYT Github
 live_df = pd.read_csv(liveurl, parse_dates=['date'])  # live_df contains today's data, df contains data from before
+population_df = pd.read_csv('2019_county_population_estimates.csv', sep=';', encoding='latin-1')
 
-df = df[df['county'] == 'Hennepin']  # filter for Hennepin data
-live_df = live_df[live_df['county'] == 'Hennepin']
+
+state = 'Minnesota'
+county = 'Hennepin'
+
+
+population_df = population_df[population_df['STNAME'] == state]  #find population of county
+population_df = population_df[population_df['CTYNAME'] == county + ' County']
+try:
+    population = population_df.iloc[0]['POPESTIMATE2019']
+    print(population)
+except:
+    print("An error occured. Make sure you have spelled the name and the state correctly, and that the state isn't Alaska because alaska names their counties weirdly")
+
+df = df[df['state'] == state] #filter for Minnesota data
+live_df = live_df[live_df['state'] == state]
+
+df = df[df['county'] == county]  # filter for county data
+live_df = live_df[live_df['county'] == county]
 
 df = df[['date', 'cases']]  # get only case + date for each day
 live_df = live_df[['date', 'cases']]
@@ -20,9 +37,9 @@ df_diff = df.set_index('date').diff()  # get number of new cases per day
 
 df_diff['Date'] = df_diff.index.date  # return date to its own column rather than as the index
 cutoff = datetime.date(2020, 8, 30)  # set cutoff date
-df_diff['cases'][-1] = 308 # manually enter today's data if needed (comment out otherwise)
+df_diff['cases'][-1] = 196  # manually enter today's data if needed (comment out otherwise)
 df_diff['School Metric'] = df_diff.rolling(14).sum()  # take 14-day rolling sum
-df_diff['School Metric'] *= 10000 / 1265843  # find cases per 10k people
+df_diff['School Metric'] *= 10000 / population  # find cases per 10k people
 df_diff = df_diff[df_diff['Date'] > cutoff]  # filter only dates after cutoff date
 
 df_diff.plot(y="School Metric", color="k", kind="line", lw="3", label="_nolegend_")  # plot the line
