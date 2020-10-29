@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import datetime
  
 url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv'
 liveurl = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv'
@@ -12,10 +13,10 @@ population_df = pd.read_csv('https://raw.githubusercontent.com/piis31415/CountyC
  
 state = 'Minnesota'
 county = 'Hennepin'
-newcases, probcases = 312,19 # manually-entered number of new cases today, as of 10/29/20
+newcases, probcases = 493, 0 # manually-entered number of new cases today, as of 10/29/20
  
  
-m anual = True
+manual = True
  
  
 population_df = population_df[population_df['STNAME'] == state]  #find population of county
@@ -86,7 +87,7 @@ if manual:
   #titlestr = 'MN School Metric for ' + county + ' County, as of ' + str(df_diff.iloc[-1,1])
 #else:
 #  titlestr = 'MN School Metric for ' + county + ' County, ' + state + ', as of ' + str(df_diff.iloc[-1,1])
-plt.title(titlestr, fontsize=16) # add title
+#plt.title(titlestr, fontsize=16) # add title
  
 plt.tight_layout()  # make sure full legend is shown
  
